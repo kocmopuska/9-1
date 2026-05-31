@@ -1,0 +1,53 @@
+class Bird {
+    field int x;
+    field int y;
+    field int size;
+
+    constructor Bird new(int Ax, int Ay) {
+        let x = Ax;
+        let y = Ay;
+        let size = 15;
+        return this;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method int getY() { return y; }
+    method int getSize() { return size; }
+
+    method void reset(int Ay) {
+        do draw(false);
+        let y = Ay;
+        do draw(true);
+        return;
+    }
+
+    method void draw(boolean isBlack) {
+        do Screen.setColor(isBlack);
+        do Screen.drawRectangle(x, y, x + size, y + size);
+        return;
+    }
+
+    method void move() {
+        do draw(false);
+        let y = y + 2;
+        if ((y + size) > 255) {
+            let y = 255 - size;
+        }
+        do draw(true);
+        return;
+    }
+
+    method void flap() {
+        do draw(false);
+        let y = y - 25;
+        if (y < 0) {
+            let y = 0;
+        }
+        do draw(true);
+        return;
+    }
+}

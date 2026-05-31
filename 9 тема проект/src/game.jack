@@ -1,0 +1,48 @@
+class Game {
+    field Bird bird;
+    field Pipe pipe;
+    field boolean exit;
+
+    constructor Game new() {
+        let bird = Bird.new(50, 100);
+        let pipe = Pipe.new(512, 100);
+        let exit = false;
+        return this;
+    }
+
+    method void dispose() {
+        do bird.dispose();
+        do pipe.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method void run() {
+        var char key;
+        var int birdY, birdSize, pipeX, pipeW, gapY, gapH;
+        while (~exit) {
+            let key = Keyboard.keyPressed();
+            if (key = 140) { let exit = true; } 
+            if (key = 32) { do bird.flap(); }
+
+            do bird.move();
+            do pipe.move();
+
+            let birdY = bird.getY();
+            let birdSize = bird.getSize();
+            let pipeX = pipe.getX();
+            let pipeW = pipe.getWidth();
+            let gapY = pipe.getGapY();
+            let gapH = pipe.getGapHeight();
+
+            if ((pipeX < (50 + birdSize)) & ((pipeX + pipeW) > 50)) {
+                if ((birdY < gapY) | ((birdY + birdSize) > (gapY + gapH))) {
+                    do bird.reset(100);
+                    do pipe.reset(512, 100);
+                }
+            }
+            do Sys.wait(30);
+        }
+        return;
+    }
+}

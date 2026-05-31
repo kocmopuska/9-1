@@ -1,0 +1,49 @@
+class Pipe {
+    field int x;
+    field int gapY;
+    field int width;
+    field int gapHeight;
+
+    constructor Pipe new(int Ax, int AgapY) {
+        let x = Ax;
+        let gapY = AgapY;
+        let width = 40;
+        let gapHeight = 70;
+        return this;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method int getX() { return x; }
+    method int getWidth() { return width; }
+    method int getGapY() { return gapY; }
+    method int getGapHeight() { return gapHeight; }
+
+    method void draw(boolean isBlack) {
+        do Screen.setColor(isBlack);
+        do Screen.drawRectangle(x, 0, x + width, gapY);
+        do Screen.drawRectangle(x, gapY + gapHeight, x + width, 255);
+        return;
+    }
+
+    method void move() {
+        do draw(false);
+        let x = x - 4;
+        if (x < 0) {
+            let x = 512 - width;
+        }
+        do draw(true);
+        return;
+    }
+
+    method void reset(int Ax, int AgapY) {
+        do draw(false);
+        let x = Ax;
+        let gapY = AgapY;
+        do draw(true);
+        return;
+    }
+}
